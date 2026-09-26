@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf3ff">
+  <meta name="description" content="Qayerda bo‘lmang, ob-havo ma’lumoti doimo yoningizda.">
+  <title>Weatherly — Ob-havo ma’lumoti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Weatherly home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="19.5" cy="10" r="5.5"/><path d="M11.4 23.8h12.1a5.2 5.2 0 0 0 .4-10.4 7.6 7.6 0 0 0-14.4 2.5 4 4 0 0 0 1.9 7.9Z"/></svg></span>
+      <span>weatherly<span class="brand-period">.</span></span>
+    </a>
+    <form class="search" id="search-form" role="search">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
+      <label class="sr-only" for="city-search">Search city</label>
+      <input id="city-search" type="search" placeholder="Shaharni qidiring..." autocomplete="off" aria-label="Shaharni qidiring">
+      <button class="search-submit" type="submit" aria-label="Qidirish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      <div class="search-popover" id="search-popover" hidden></div>
+    </form>
+    <div class="header-actions">
+      <button class="icon-button location-button" id="location-button" type="button" aria-label="Joylashuvimni aniqlash" title="Joylashuvimni aniqlash"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="location-label">Joylashuvim</span></button>
+      <button class="unit-switch" id="unit-toggle" type="button" aria-label="Switch to Fahrenheit"><span class="unit-choice active" data-unit="c">°C</span><span class="unit-divider">/</span><span class="unit-choice" data-unit="f">°F</span></button>
+      <button class="icon-button theme-button" id="theme-toggle" type="button" aria-label="Qorong‘i mavzuga o‘tish" title="Mavzuni almashtirish"><svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+    </div>
+  </header>
+
+  <main id="home" class="page-shell">
+    <div class="topline"><div><p class="eyebrow">OB-HAVO MA’LUMOTI</p><h1>Ob-havo<span class="wave">.</span></h1></div><div class="updated-note"><span class="live-dot"></span><span id="updated-label">Jonli ma’lumot</span></div></div>
+    <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="weather-layout" id="weather" aria-label="Current weather">
+      <article class="hero-card weather-surface" id="hero-card" aria-busy="true">
+        <div class="hero-top"><div><p class="hero-kicker"><span class="pin-small">⌖</span> HOZIRGI OB-HAVO</p><h2 id="city-name">Ob-havo yuklanmoqda…</h2><p class="hero-date" id="date-label">Prognoz olinmoqda</p></div><button class="favorite-button" id="favorite-toggle" type="button" aria-label="Shaharni saqlanganlarga qo‘shish" title="Shaharni saqlash"><span aria-hidden="true">☆</span></button></div>
+        <div class="hero-main"><div class="hero-temp-wrap"><div class="hero-temp" id="current-temp">—<span>°</span></div><div class="hero-condition"><span class="condition-icon" id="condition-icon" aria-hidden="true">◌</span><div><strong id="condition-label">Ob-havo olinmoqda</strong><span id="feels-like">His qilinishi: —</span></div></div></div><div class="hero-art" id="hero-art" aria-hidden="true"><div class="weather-sun"></div><div class="weather-cloud cloud-a"></div><div class="weather-cloud cloud-b"></div><div class="weather-rain"><i></i><i></i><i></i></div></div></div>
+        <div class="hero-footer"><span class="hero-place" id="country-label">Prognoz bilan ulanmoqda</span><span class="hero-separator"></span><span id="daylight-label">Mahalliy vaqt —</span></div>
+      </article>
+      <div class="detail-grid" id="details-grid" aria-label="Weather details">
+        <article class="detail-card"><span class="detail-icon icon-feels" aria-hidden="true">⌁</span><span class="detail-label">His qilinishi</span><strong class="detail-value" id="detail-feels">—</strong><span class="detail-unit">seziladigan harorat</span></article>
+        <article class="detail-card"><span class="detail-icon icon-humidity" aria-hidden="true">◉</span><span class="detail-label">Namlik</span><strong class="detail-value" id="detail-humidity">—</strong><span class="detail-unit">havoning nisbiy namligi</span></article>
+        <article class="detail-card"><span class="detail-icon icon-wind" aria-hidden="true">≋</span><span class="detail-label">Shamol</span><strong class="detail-value" id="detail-wind">—</strong><span class="detail-unit" id="detail-wind-direction">tezlik · yo‘nalish</span></article>
+        <article class="detail-card"><span class="detail-icon icon-pressure" aria-hidden="true">◌</span><span class="detail-label">Bosim</span><strong class="detail-value" id="detail-pressure">—</strong><span class="detail-unit">dengiz sathida</span></article>
+        <article class="detail-card"><span class="detail-icon icon-visibility" aria-hidden="true">◎</span><span class="detail-label">Ko‘rinish</span><strong class="detail-value" id="detail-visibility">—</strong><span class="detail-unit">gorizontal masofa</span></article>
+        <article class="detail-card"><span class="detail-icon icon-uv" aria-hidden="true">☼</span><span class="detail-label">Ultrabinafsha</span><strong class="detail-value" id="detail-uv">—</strong><span class="detail-unit" id="uv-description">ultrabinafsha daraja</span></article>
+        <article class="detail-card"><span class="detail-icon icon-cloud" aria-hidden="true">☁</span><span class="detail-label">Bulutlilik</span><strong class="detail-value" id="detail-cloud">—</strong><span class="detail-unit">osmonning qoplangan qismi</span></article>
+      </div>
+    </section>
+
+    <section class="content-grid" id="forecast">
+      <article class="panel hourly-panel"><div class="section-heading"><div><p class="eyebrow">YAQIN SOATLAR</p><h2>Soatlik prognoz</h2></div><span class="section-aside" id="hourly-aside">Keyingi 12 soat</span></div><div class="hourly-list" id="hourly-list" aria-label="Soatlik prognoz"></div></article>
+      <article class="panel sun-panel"><div class="section-heading"><div><p class="eyebrow">KUNDUZGI VAQT</p><h2>Quyosh chiqishi va botishi</h2></div><span class="sun-badge" aria-hidden="true">☼</span></div><div class="sun-times"><div><span class="sun-label">QUYOSH CHIQISHI</span><strong id="sunrise-time">—</strong></div><div class="sun-track" aria-label="Kunduzgi vaqt chizig‘i"><span class="sun-track-line"></span><span class="sun-orb" id="sun-orb"></span><span class="track-start">☾</span><span class="track-end">☾</span></div><div class="sun-time-right"><span class="sun-label">QUYOSH BOTISHI</span><strong id="sunset-time">—</strong></div></div><div class="day-length"><span>Kunduz uzunligi</span><strong id="day-length">—</strong></div></article>
+    </section>
+
+    <section class="content-grid second-row">
+      <article class="panel forecast-panel"><div class="section-heading"><div><p class="eyebrow">OLDINDAN REJA QILING</p><h2>7 kunlik prognoz</h2></div><span class="section-aside">Shu hafta</span></div><div class="daily-list" id="daily-list" aria-label="Yetti kunlik prognoz"></div></article>
+      <article class="panel air-panel"><div class="section-heading"><div><p class="eyebrow">TOZA HAVO</p><h2>Havo sifati</h2></div><span class="air-info" title="AQSh havo sifati indeksi">AQI ⓘ</span></div><div class="air-summary"><div class="aqi-gauge" id="aqi-gauge" role="img" aria-label="Havo sifati indeksi yuklanmoqda"><div class="aqi-gauge-inner"><strong id="aqi-value">—</strong><span>AQI</span></div></div><div class="air-status"><span class="air-status-label">HAVO HOLATI</span><strong id="aqi-status">Yuklanmoqda</strong><p id="aqi-advice">Havo sifati ma’lumoti olinmoqda</p></div></div><div class="pollutant-grid"><div><span>PM2.5</span><strong id="pm25">—</strong><small>μg/m³</small></div><div><span>PM10</span><strong id="pm10">—</strong><small>μg/m³</small></div><div><span>CO</span><strong id="co">—</strong><small>μg/m³</small></div><div><span>NO₂</span><strong id="no2">—</strong><small>μg/m³</small></div></div></article>
+    </section>
+
+    <section class="content-grid third-row">
+      <article class="panel map-panel"><div class="section-heading map-heading"><div><p class="eyebrow">ATROFINGIZDAGI OB-HAVO</p><h2>Mahalliy sharoit</h2></div><span class="map-live"><span class="live-dot"></span>Jonli xarita</span></div><div class="map-visual" id="map-visual" role="img" aria-label="Mahalliy ob-havo tasviriy xaritasi"><div class="map-grid"></div><svg class="map-river" viewBox="0 0 800 260" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 170 C95 135 128 203 238 169 S366 112 454 151 563 225 657 172 742 128 830 148"/></svg><div class="map-road road-one"></div><div class="map-road road-two"></div><div class="map-road road-three"></div><div class="map-label label-one">BOG‘ HUDUDI</div><div class="map-label label-two">SHAHAR MARKAZI</div><div class="map-label label-three">SOHIL BO‘YI</div><div class="map-marker"><span id="map-current-temp">—°</span><i></i></div><div class="map-pin" aria-hidden="true">⌖</div><div class="map-controls"><button type="button" id="zoom-in" aria-label="Kattalashtirish">+</button><button type="button" id="zoom-out" aria-label="Kichraytirish">−</button></div><div class="map-legend"><span><i class="legend-sun"></i>Ochiq</span><span><i class="legend-rain"></i>Yomg‘ir</span></div><div class="map-credit">Tasviriy ob-havo xaritasi</div></div></article>
+      <article class="panel saved-panel"><div class="section-heading"><div><p class="eyebrow">SAQLANGAN JOYLAR</p><h2>Shaharlarim</h2></div><span class="saved-count" id="saved-count">0 / 6</span></div><div class="saved-list" id="favorite-list"></div><div class="saved-divider"></div><div class="section-heading recent-heading"><div><p class="eyebrow">TEZKOR KIRISH</p><h2>So‘nggi qidiruvlar</h2></div><span class="history-icon" aria-hidden="true">↺</span></div><div class="recent-list" id="recent-list"></div></article>
+    </section>
+    <footer class="site-footer" id="about"><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="19.5" cy="10" r="5.5"/><path d="M11.4 23.8h12.1a5.2 5.2 0 0 0 .4-10.4 7.6 7.6 0 0 0-14.4 2.5 4 4 0 0 0 1.9 7.9Z"/></svg></span><span>weatherly<span class="brand-period">.</span></span></a><p>Har qayerda ob-havo ma’lumoti.</p><nav aria-label="Pastki menyu"><a href="#home">Bosh sahifa</a><a href="#weather">Ob-havo</a><a href="#forecast">Prognoz</a><a href="#about">Haqida</a><a href="mailto:hello@weatherly.app">Aloqa</a></nav><span class="copyright">© 2026 Weatherly</span><small class="data-credit">Ma’lumotlar: <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open‑Meteo</a> · Havo sifati: CAMS ENSEMBLE</small></footer>
+  </main>
+  <div class="loading-scrim" id="loading-scrim" hidden aria-hidden="true"><span class="loader"></span><span>Updating your forecast</span></div>
+</body>
+</html>
